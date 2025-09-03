@@ -1,0 +1,23 @@
+[package]
+name = "hyptyp"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "hyptyp"
+path = "bin/main.rs"
+
+[dependencies]
+anyhow = "1.0.99"
+clap = { version = "4.5.45", features = ["derive"] }
+futures = "0.3.31"
+hex = "0.4.3"
+http = "1.3.1"
+hyper = "1.7.0"
+mime_guess = "2.0.5"
+notify = "8.2.0"
+tempfile = "3.21.0"
+tl = "0.7.8"
+tokio = { version = "1.47.1", features = ["rt-multi-thread"] }
+tokio-stream = { version = "0.1.17", features = ["sync"] }
+warp = { version = "0.4.2", features = ["server"] }
