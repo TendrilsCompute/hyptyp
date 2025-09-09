@@ -225,7 +225,7 @@
             [ ]
             footnote
             [ ]
-            t.a(class: "footnote-back", href: "#footnote-" + str(id) + "-ref")[↩]
+            t.a(class: "footnote-back", href: "#footnote-" + str(id) + "-ref")[↩︎]
           })
         }
       })
