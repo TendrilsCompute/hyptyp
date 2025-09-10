@@ -6,12 +6,10 @@
 :root {
   --theme: light-dark(#25b, #7af);
 
-  --mono-0: #111;
-  --mono-1: #222;
-  --mono-2: #666;
-  --mono-3: #999;
-  --mono-4: #bbb;
-  --mono-5: #ddd;
+  --white: #ddd;
+  --dawn: #ccc;
+  --dusk: #222;
+  --black: #111;
 
   --body-font: "Atkinson Hyperlegible Next";
   --mono-font: "Atkinson Hyperlegible Mono";
@@ -21,10 +19,17 @@
 
 :root {
   color-scheme: dark;
-  --fg: light-dark(var(--mono-1), var(--mono-4));
-  --fg-grey: light-dark(var(--mono-2), var(--mono-3));
-  --bg: light-dark(var(--mono-5), var(--mono-1));
-  --bg-dark: light-dark(var(--mono-4), var(--mono-0));
+
+  --dusk-black: color-mix(in srgb, var(--dusk), var(--black));
+  --dawn-white: color-mix(in srgb, var(--dawn), var(--white));
+
+  --dawn-grey: color-mix(in srgb, var(--dawn), var(--black) 25%);
+  --dusk-grey: color-mix(in srgb, var(--dusk), var(--white) 25%);
+
+  --fg: light-dark(var(--dusk), var(--dawn));
+  --fg-grey: light-dark(var(--dusk-grey), var(--dawn-grey));
+  --bg: light-dark(var(--white), var(--black));
+  --bg-grey: light-dark(var(--dawn-white), var(--dusk-black));
 }
 
 @media(prefers-color-scheme: light) {
@@ -73,7 +78,7 @@ body {
   left: calc(var(--sidebar-width) - var(--sidebar-size));
   width: calc(var(--sidebar-size));
   height: 100%;
-  background-color: var(--bg-dark);
+  background-color: var(--bg-grey);
   padding: 1rem;
   transition: left .4s, background-color .2s;
   overflow: hidden auto;
@@ -255,7 +260,7 @@ pre, code, pre span {
 }
 
 pre {
-  background-color: var(--bg-dark);
+  background-color: var(--bg-grey);
   padding: 1rem;
   border-radius: .25rem;
   overflow: auto;
@@ -265,15 +270,8 @@ p {
   text-align: justify;
 }
 
-code {
-  background-color: var(--bg-dark);
-  border-width: 0px .1rem;
-  border-radius: .25rem;
-  transition: color .2s, background-color .2s;
-
-  &::before, &::after {
-    content: "\202f";
-  }
+code::before, code::after {
+  content: "\202f";
 }
 
 #sidebar code {
@@ -286,7 +284,7 @@ code {
 a {
   color: var(--fg);
   text-decoration: underline var(--theme);
-  text-underline-offset: .05rem;
+  text-underline-offset: .1rem;
   text-decoration-thickness: .05rem;
   transition: color .2s, text-underline-offset .2s;
   &:hover {
