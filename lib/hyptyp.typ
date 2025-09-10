@@ -114,7 +114,7 @@
     #t.meta(name: "darkreader-lock")
     #t.link(rel: "stylesheet", href: "/hyptyp.css")
     #if "hyptyp-dev" in sys.inputs {
-      t.script("new EventSource('/hyptyp-sse').onmessage = () => location = location")
+      t.script("new EventSource('/hyptyp-sse').onmessage = () => location.reload()")
     }
     #(site.head-fonts)()
     #(site.head-extra)(node)
