@@ -44,9 +44,6 @@ html {
 
   font-family: var(--body-font);
   font-size-adjust: cap-height .666;
-
-  scrollbar-width: thin;
-  scrollbar-color: var(--fg-grey) transparent;
 }
 
 body {
@@ -70,6 +67,11 @@ body {
   background-color: color-mix(in srgb, var(--fg) 20%, transparent);
 }
 
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--fg-grey) transparent;
+}
+
 #sidebar {
   display: flex;
   flex-direction: column;
@@ -80,8 +82,12 @@ body {
   height: 100%;
   background-color: var(--bg-grey);
   padding: 1rem;
-  transition: left .4s, background-color .2s;
+  transition: left .4s, background-color .2s, scrollbar-color .2s;
   overflow: hidden auto;
+
+  &:not(:hover) {
+    scrollbar-color: transparent transparent;
+  }
 
   a {
     display: inline-block;
