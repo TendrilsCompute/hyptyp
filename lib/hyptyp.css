@@ -73,8 +73,6 @@ body {
 }
 
 #sidebar {
-  display: flex;
-  flex-direction: column;
   position: fixed;
   top: 0;
   left: calc(var(--sidebar-width) - var(--sidebar-size));
@@ -88,6 +86,12 @@ body {
   &:not(:hover) {
     scrollbar-color: transparent transparent;
   }
+}
+
+#sidebar, .children {
+  display: flex;
+  flex-direction: column;
+  --index-prefix: "";
 
   a {
     display: inline-block;
@@ -121,7 +125,7 @@ body {
 
     &::before {
       justify-self: right;
-      content: counters(sidebar, ".") ".";
+      content: var(--index-prefix) counters(sidebar, ".") ".";
       padding: 0 .33rem;
       font-variant-numeric: tabular-nums;
       color: var(--fg-grey);

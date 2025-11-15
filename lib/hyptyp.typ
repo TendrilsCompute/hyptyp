@@ -66,7 +66,7 @@
     }
   },
 
-  build-tree: site => (cwd, path, root: false) => {
+  build-tree: site => (cwd, path, root: false, indexes: ()) => {
     let path = path-join(cwd, path)
     import path as module
     let module = dictionary(module)
@@ -84,7 +84,8 @@
       slug: slug,
       title: (site.extract-title)(content),
       content: content,
-      children: children.map(child => (site.build-tree)(cwd, child))
+      indexes: indexes,
+      children: children.enumerate().map(((i, child)) => (site.build-tree)(cwd, child, indexes: (..indexes, i + 1)))
     )
   },
 
@@ -146,6 +147,7 @@
       #show footnote: site.show-footnote
       #footnotes.update(())
       #node.content
+      #(site.children)(node)
       #(site.footnotes)()
     ]
     #t.nav(id: "prev-next", {
@@ -159,6 +161,15 @@
       }
     })
   ],
+
+  children: site => node =>
+    t.div(class: "children", style: ("--index-prefix: \"",..node.indexes.map(n => str(n) + "."), "\";").join())[
+      #t.ol[
+        #for child in node.children [
+          #t.li[#(site.sidebar-tree)(child, none)]
+        ]
+      ]
+    ],
 
   show-page: site => content => content,
 
