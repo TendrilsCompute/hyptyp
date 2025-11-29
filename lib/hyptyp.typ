@@ -43,7 +43,7 @@
     if content == none {
       ""
     } else if content.has("body") {
-      context-text(content.body)
+      (site.content-text)(content.body)
     } else if content.has("children") {
       content.children.map(site.content-text).join()
     } else if content.has("text") {
@@ -82,7 +82,7 @@
     let cwd = path-parent(path);
     (
       slug: slug,
-      title: (site.extract-title)(content),
+      title: if "title" in module { module.title } else { (site.extract-title)(content) },
       content: content,
       indexes: indexes,
       children: children.enumerate().map(((i, child)) => (site.build-tree)(cwd, child, indexes: (..indexes, i + 1)))
