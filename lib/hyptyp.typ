@@ -1,10 +1,8 @@
 
 #let site = state("hyptyp:site", none)
 #let slug = state("hyptyp:slug", none)
-#let path = state("hyptyp:path", none)
 #let site_ = site
 #let slug_ = slug
-#let path_ = path
 
 #let footnotes = state("hyptyp:footnotes", ())
 
@@ -66,23 +64,25 @@
     }
   },
 
-  build-tree: site => (cwd, path, root: false, indexes: ()) => {
-    let path = path-join(cwd, path)
-    import path as module
-    let module = dictionary(module)
-    let slug = module.at("slug", default: if root { site.root-slug } else { (site.path-to-slug)(path) })
+  build-tree: site => (cwd, child, root: false, indexes: ()) => {
+    if type(child) == str {
+      let path = path-join(cwd, child)
+      import path as module
+      let content = include path
+      child = (path: child, content: content, ..dictionary(module))
+    }
+    let path = path-join(cwd, child.path)
+    let slug = child.at("slug", default: if root { site.root-slug } else { (site.path-to-slug)(path) })
     let content = {
       slug_.update(slug)
-      path_.update(path)
-      include path
+      child.content
       slug_.update(none)
-      path_.update(none)
     }
-    let children = module.at("children", default: ())
+    let children = child.at("children", default: ())
     let cwd = path-parent(path);
     (
       slug: slug,
-      title: if "title" in module { module.title } else { (site.extract-title)(content) },
+      title: child.at("title", default: (site.extract-title)(content)),
       content: content,
       indexes: indexes,
       children: children.enumerate().map(((i, child)) => (site.build-tree)(cwd, child, indexes: (..indexes, i + 1)))
