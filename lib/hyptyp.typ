@@ -173,7 +173,16 @@
 
   show-page: site => content => content,
 
-  show-doc: site => content => content,
+  show-pdf: site => content => {
+    set page(numbering: "1")
+    content
+  },
+
+  render-file-pdf: site => node => {
+    let file-depth = node.indexes.len()
+    set heading(offset: calc.max(0, file-depth - 1))
+    node.content
+  },
 
   render-page: site => (tree, node) => {
     t.html(hyptyp-slug: node.slug, hyptyp-path: (site.slug-to-html-path)(node.slug))[
@@ -305,11 +314,9 @@
       }
     ]
   } else {
-    set page(numbering: "1")
-    show: site.show-doc
-
+    show: site.show-pdf
     for node in (site.flatten-tree)(tree) {
-      node.content
+      (site.render-file-pdf)(node)
     }
   }
 }
